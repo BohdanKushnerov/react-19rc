@@ -1,4 +1,4 @@
-import { Suspense, use, useEffect, useState } from "react";
+import { Suspense, use } from "react";
 
 interface IPost {
   body: string;
@@ -11,13 +11,12 @@ interface IPostPromise {
   postPromise: Promise<IPost>;
 }
 
-const getUser = (): Promise<IPost | Error> => {
-  return new Promise((res, rej) => {
+const getUser = (): Promise<IPost> => {
+  return new Promise((res) => {
     setTimeout(() => {
-      fetch("https://jsonplaceholder.typicode.co/posts/1")
+      fetch("https://jsonplaceholder.typicode.com/posts/1")
         .then((data) => data.json())
-        .then((result) => res(result))
-        .catch((error: Error) => rej(error));
+        .then((result) => res(result));
     }, 1000);
   });
 };
@@ -71,11 +70,9 @@ const Post = () => {
 
   const postPromise = getUser();
 
-  console.log(postPromise);
-
   return (
     <>
-      {typeof postPromise.then === "function" && (
+      {postPromise && (
         <Suspense fallback={<div>Loading...</div>}>
           <PostContainer postPromise={postPromise} />
         </Suspense>

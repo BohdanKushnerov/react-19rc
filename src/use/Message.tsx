@@ -1,6 +1,6 @@
 import { Suspense, use, useState } from "react";
 
-interface IMessagePromise {
+interface IMessageContentProps {
   messagePromise: Promise<string>;
 }
 
@@ -8,12 +8,12 @@ function fetchMessage(): Promise<string> {
   return new Promise((resolve) => setTimeout(resolve, 1000, "⚛️"));
 }
 
-function MessageContent({ messagePromise }: IMessagePromise) {
+function MessageContent({ messagePromise }: IMessageContentProps) {
   const messageContent = use(messagePromise);
   return <p>Here is the message: {messageContent}</p>;
 }
 
-function MessageContainer({ messagePromise }: IMessagePromise) {
+function MessageContainer({ messagePromise }: IMessageContentProps) {
   return (
     <Suspense fallback={<p>⌛Downloading message...</p>}>
       <MessageContent messagePromise={messagePromise} />
